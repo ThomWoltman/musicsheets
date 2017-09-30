@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Managers;
+﻿using DPA_Musicsheets.Converters;
+using DPA_Musicsheets.Managers;
 using DPA_Musicsheets.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -26,14 +27,25 @@ namespace DPA_Musicsheets.ViewModels
             _fileHandler = fileHandler;
             Staffs = new ObservableCollection<MusicalSymbol>();
 
-            _fileHandler.WPFStaffsChanged += (src, args) =>
-            { 
+            //_fileHandler.WPFStaffsChanged += (src, args) =>
+            //{ 
+            //    Staffs.Clear();
+            //    foreach (var symbol in args.Symbols)
+            //    {
+            //        Staffs.Add(symbol);
+            //    }
+
+            //    MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = args.Message });
+            //};
+
+            _fileHandler.StaffChanged += (src, args) =>
+            {
                 Staffs.Clear();
-                foreach (var symbol in args.Symbols)
+                var newstaff = new WPFStaffConverter().Convert(args.Staff);
+                foreach (var symbol in newstaff)
                 {
                     Staffs.Add(symbol);
                 }
-
                 MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = args.Message });
             };
         }

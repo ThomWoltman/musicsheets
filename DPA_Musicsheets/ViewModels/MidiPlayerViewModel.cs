@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Managers;
+﻿using DPA_Musicsheets.Converters;
+using DPA_Musicsheets.Managers;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Sanford.Multimedia.Midi;
@@ -40,10 +41,17 @@ namespace DPA_Musicsheets.ViewModels
             };
 
             _fileHandler = fileHandler;
-            _fileHandler.MidiSequenceChanged += (src, args) =>
+            //_filehandler.midisequencechanged += (src, args) =>
+            //{
+            //    stopcommand.execute(null);
+            //    _sequencer.sequence = args.midisequence;
+            //    updatebuttons();
+            //};
+
+            _fileHandler.StaffChanged += (src, args) =>
             {
                 StopCommand.Execute(null);
-                _sequencer.Sequence = args.MidiSequence;
+                _sequencer.Sequence = new MidiStaffConverter().Convert(args.Staff);
                 UpdateButtons();
             };
         }

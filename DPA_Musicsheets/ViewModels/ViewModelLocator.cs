@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using System.Collections.Generic;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -12,6 +13,10 @@ namespace DPA_Musicsheets.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<FileHandler>();
+
+            SimpleIoc.Default.Register<IEnumerable<IFileHandlerProvider>>(() => new[] {
+                new MidiFileHandlerProvider(),
+            });
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LilypondViewModel>();
