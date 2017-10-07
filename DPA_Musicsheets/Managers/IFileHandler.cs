@@ -10,5 +10,7 @@ namespace DPA_Musicsheets.Managers
     public interface IFileHandler
     {
         Staff OpenFile(string fileName);
+
+        Staff SaveFile(string fileName, Staff staff);
     }
 }

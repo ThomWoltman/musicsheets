@@ -41,12 +41,6 @@ namespace DPA_Musicsheets.ViewModels
             };
 
             _fileHandler = fileHandler;
-            //_filehandler.midisequencechanged += (src, args) =>
-            //{
-            //    stopcommand.execute(null);
-            //    _sequencer.sequence = args.midisequence;
-            //    updatebuttons();
-            //};
 
             _fileHandler.StaffChanged += (src, args) =>
             {

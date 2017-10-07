@@ -46,11 +46,12 @@ namespace DPA_Musicsheets.ViewModels
         {
             _fileHandler = fileHandler;
 
-            _fileHandler.LilypondTextChanged += (src, e) =>
+            _fileHandler.StaffChanged += (src, e) =>
             {
                 _textChangedByLoad = true;
-                LilypondText = _previousText = e.LilypondText;
+                //lilypondtext = convert(e.staff);
                 _textChangedByLoad = false;
+
             };
 
             _text = "Your lilypond text will appear here.";
@@ -71,7 +72,8 @@ namespace DPA_Musicsheets.ViewModels
                         _waitingForRender = false;
                         UndoCommand.RaiseCanExecuteChanged();
 
-                        _fileHandler.LoadLilypond(LilypondText);
+                        //set new Staffs;
+                        //_fileHandler.LoadLilypond(LilypondText);
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }
@@ -97,22 +99,8 @@ namespace DPA_Musicsheets.ViewModels
             SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
             if (saveFileDialog.ShowDialog() == true)
             {
-                string extension = Path.GetExtension(saveFileDialog.FileName);
-                if (extension.EndsWith(".mid"))
-                {
-                    _fileHandler.SaveToMidi(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".ly"))
-                {
-                    _fileHandler.SaveToLilypond(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".pdf"))
-                {
-                    _fileHandler.SaveToPDF(saveFileDialog.FileName);
-                }
-                else
-                {
-                    MessageBox.Show($"Extension {extension} is not supported.");
+                if (!_fileHandler.SaveFile(saveFileDialog.FileName)){
+                    MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
                 }
             }
         });
