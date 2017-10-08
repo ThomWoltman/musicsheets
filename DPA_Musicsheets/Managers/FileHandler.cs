@@ -52,8 +52,7 @@ namespace DPA_Musicsheets.Managers
         internal bool SaveFile(string fileName)
         {
             var filehandler = CreateFileHandler(fileName);
-            if(filehandler != null)
-                filehandler.SaveFile(fileName, this.MyStaff);
+            filehandler?.SaveFile(fileName, this.MyStaff);
             return filehandler != null;   
         }
 

@@ -8,15 +8,15 @@ namespace DPA_Musicsheets.Models
 {
     public enum NoteType
     {
-            C,
-            D,
-            E,
-            F,
-            G,
-            A,
-            B,
+            C = 'C',
+            D = 'D',
+            E = 'E',
+            F = 'F',
+            G = 'G',
+            A = 'A',
+            B = 'B',
             Unknown,
     }
 
-
+    
 }

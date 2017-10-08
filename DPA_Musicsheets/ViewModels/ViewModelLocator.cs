@@ -15,7 +15,8 @@ namespace DPA_Musicsheets.ViewModels
             SimpleIoc.Default.Register<FileHandler>();
 
             SimpleIoc.Default.Register<IEnumerable<IFileHandlerProvider>>(() => new[] {
-                new MidiFileHandlerProvider(),
+                (IFileHandlerProvider)new LilypondFileHandlerProvider(),
+                (IFileHandlerProvider)new MidiFileHandlerProvider(),
             });
 
             SimpleIoc.Default.Register<MainViewModel>();

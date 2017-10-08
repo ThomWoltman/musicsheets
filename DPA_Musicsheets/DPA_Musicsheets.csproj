@@ -108,6 +108,8 @@
     <Compile Include="Converters\WPFStaffConverter.cs" />
     <Compile Include="Managers\IFileHandler.cs" />
     <Compile Include="Managers\IFileHandlerProvider.cs" />
+    <Compile Include="Managers\LilypondFileHandler.cs" />
+    <Compile Include="Managers\LilypondFileHandlerProvider.cs" />
     <Compile Include="Managers\MidiFileHandler.cs" />
     <Compile Include="Managers\MidiFileHandlerProvider.cs" />
     <Compile Include="Managers\MidiSequenceEventArgs.cs" />
@@ -127,6 +129,13 @@
     <Compile Include="Models\NoteType.cs" />
     <Compile Include="Models\Repeat.cs" />
     <Compile Include="Models\Rest.cs" />
+    <Compile Include="Models\State\IState.cs" />
+    <Compile Include="Models\State\CommandState.cs" />
+    <Compile Include="Models\State\NoteState.cs" />
+    <Compile Include="Models\State\OctaveEntryState.cs" />
+    <Compile Include="Models\State\StateContext.cs" />
+    <Compile Include="Models\State\TempoState.cs" />
+    <Compile Include="Models\State\TimeState.cs" />
     <Compile Include="Models\Symbol.cs" />
     <Compile Include="Models\Staff.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />
