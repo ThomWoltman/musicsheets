@@ -59,7 +59,21 @@ namespace DPA_Musicsheets.Models.State
             }
             else if (new Regex(@"r.*?[0-9][.]*").IsMatch(content)) // == rest
             {
+                var rest = new Rest();
+                rest.Length = 1.0 / Int32.Parse(Regex.Match(content, @"\d+").Value);
 
+                staff.AddSymbol(rest);
+
+                double absoluteLength = 1.0 / (1.0 / rest.Length);
+
+                double percentageOfBeatNote = absoluteLength / (1.0 / staff.BeatNote);
+                context.percentageOfBar += percentageOfBeatNote / staff.BeatPerBar;
+
+                if (context.percentageOfBar >= 1)
+                {
+                    staff.AddBar(new Bar());
+                    context.percentageOfBar = 0;
+                }
             }
         }
     }

@@ -19,7 +19,8 @@ namespace DPA_Musicsheets.Converters
         public Staff Convert(Sequence sequence)
         {
             Staff staff = new Staff();
-            Models.Note currentNote = new Models.Note();
+            Models.Note currentNote = null;
+            Models.Rest currentRest = null;
             var symbolFactory = new SymbolFactory();
 
             int division = sequence.Division;
@@ -73,35 +74,34 @@ namespace DPA_Musicsheets.Converters
                                 }
                                 else if (!startedNoteIsClosed)
                                 {
-                                    // Finish the previous note with the length.
-                                    bool hasDot = false;
-                                    double percentageOfBar;
-
-                                    currentNote.Length = GetNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, staff.BeatNote, staff.BeatPerBar, out hasDot, out percentageOfBar);
-                                    currentNote.HasDot = hasDot;
-
-                                    percentageOfBarReached += percentageOfBar;
-
-
-                                    previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
-
-                                    startedNoteIsClosed = true;
-
-                                    staff.AddSymbol(currentNote);
-                                    currentNote = null;
-
-                                    if (percentageOfBarReached >= 1)
+                                    if(currentNote != null)
                                     {
-                                        percentageOfBarReached -= 1;
-                                        staff.AddBar(new Bar());
+                                        // Finish the previous note with the length.
+                                        bool hasDot = false;
+                                        double percentageOfBar;
+
+                                        currentNote.Length = GetNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, staff.BeatNote, staff.BeatPerBar, out hasDot, out percentageOfBar);
+                                        currentNote.HasDot = hasDot;
+
+                                        percentageOfBarReached += percentageOfBar;
+
+
+                                        previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
+
+                                        startedNoteIsClosed = true;
+
+                                        staff.AddSymbol(currentNote);
+                                        currentNote = null;
+
+                                        if (percentageOfBarReached >= 1)
+                                        {
+                                            percentageOfBarReached -= 1;
+                                            staff.AddBar(new Bar());
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    var symbol = symbolFactory.createRest();
-                                    staff.AddSymbol(symbol);
-                                }
                             }
+                            
                             break;
                     }
                 }
@@ -134,7 +134,7 @@ namespace DPA_Musicsheets.Converters
 
         public void Visit(Models.Rest rest)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private double GetNoteLength(int absoluteTicks, int nextNoteAbsoluteTicks, int division, int beatNote, int beatsPerBar, out bool hasDot, out double percentageOfBar)

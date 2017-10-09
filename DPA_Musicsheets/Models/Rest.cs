@@ -10,6 +10,7 @@ namespace DPA_Musicsheets.Models
 {
     public class Rest : Symbol
     {
+        public bool HasDot { get; set; }
         public Rest()
         {
 
