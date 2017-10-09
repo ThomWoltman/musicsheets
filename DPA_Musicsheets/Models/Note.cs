@@ -27,5 +27,10 @@ namespace DPA_Musicsheets.Models
         {
             converter.Visit(this);
         }
+
+        public override void Accept(LilypondStaffConverter converter)
+        {
+            converter.Visit(this);
+        }
     }
 }

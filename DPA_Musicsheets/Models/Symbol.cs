@@ -17,5 +17,7 @@ namespace DPA_Musicsheets.Models
         public abstract void Accept(WPFStaffConverter converter);
 
         public abstract void Accept(MidiStaffConverter converter);
+
+        public abstract void Accept(LilypondStaffConverter converter);
     }
 }

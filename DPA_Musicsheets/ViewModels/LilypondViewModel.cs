@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Managers;
+﻿using DPA_Musicsheets.Converters;
+using DPA_Musicsheets.Managers;
 using DPA_Musicsheets.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -46,10 +47,10 @@ namespace DPA_Musicsheets.ViewModels
         {
             _fileHandler = fileHandler;
 
-            _fileHandler.StaffChanged += (src, e) =>
+            _fileHandler.StaffChanged += (src, args) =>
             {
                 _textChangedByLoad = true;
-                //lilypondtext = convert(e.staff);
+                LilypondText = new LilypondStaffConverter().Convert(args.Staff);
                 _textChangedByLoad = false;
 
             };
