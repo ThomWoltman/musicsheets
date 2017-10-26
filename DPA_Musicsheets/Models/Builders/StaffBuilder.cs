@@ -12,11 +12,13 @@ namespace DPA_Musicsheets.Models.Builders
         public Staff Staff { get; set; }
         public SymbolFactory SymbolFactory{ get; set; }
         public Note CurrentNote { get; set; }
+
         public StaffBuilder(SymbolFactory symbolfactory)
         {
             this.Staff = new Staff();
             this.SymbolFactory = symbolfactory;
         }
+
         public Staff Parse(Sequence sequence)
         {
 
@@ -106,6 +108,7 @@ namespace DPA_Musicsheets.Models.Builders
             }
             return Staff;
         }
+
         private double GetNoteLength(int absoluteTicks, int nextNoteAbsoluteTicks, int division, int beatNote, int beatsPerBar, out bool hasDot, out double percentageOfBar)
         {
             var lengths = new int[] { 1, 2, 4, 8, 16, 32 };
