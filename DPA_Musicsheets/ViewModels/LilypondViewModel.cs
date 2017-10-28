@@ -34,10 +34,10 @@ namespace DPA_Musicsheets.ViewModels
                     _previousText = _text;
                 }
                 _text = value;
-                RaisePropertyChanged(() => LilypondText);
+                RaisePropertyChanged(() => LilypondText);  
             }
         }
-
+        
         private bool _textChangedByLoad = false;
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
@@ -50,9 +50,8 @@ namespace DPA_Musicsheets.ViewModels
             _fileHandler.StaffChanged += (src, args) =>
             {
                 _textChangedByLoad = true;
-                LilypondText = new LilypondStaffConverter().Convert(args.Staff);
+                LilypondText = _previousText = new LilypondStaffConverter().Convert(args.Staff);
                 _textChangedByLoad = false;
-
             };
 
             _text = "Your lilypond text will appear here.";
@@ -73,10 +72,9 @@ namespace DPA_Musicsheets.ViewModels
                         _waitingForRender = false;
                         UndoCommand.RaiseCanExecuteChanged();
 
-                        //set new Staffs;
-                        //_fileHandler.LoadLilypond(LilypondText);
-                        LilypondText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
-                        _fileHandler.ChangeStaff(new LilypondStaffConverter().Convert(LilypondText));                      
+                        //set new Staffs
+                        var lyText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
+                        _fileHandler.ChangeStaff(new LilypondStaffConverter().Convert(lyText));                      
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }
