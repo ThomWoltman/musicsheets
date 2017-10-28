@@ -9,11 +9,7 @@ namespace DPA_Musicsheets.Converters.State
 		public void Handle(IMidiStaffConverterContext context)
 		{
 			int division = context.Sequence.Division;
-			//int previousMidiKey = 60; // Central C;
-			//int previousNoteAbsoluteTicks = 0;
-			//double percentageOfBarReached = 0;
 			//bool startedNoteIsClosed = true;
-			bool startedNoteIsClosed = true;
 
 			foreach (var midiEvent in context.Track.Iterator())
 			{

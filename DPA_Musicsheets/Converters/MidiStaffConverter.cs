@@ -31,10 +31,6 @@ namespace DPA_Musicsheets.Converters
 
 		public Staff Convert(Sequence sequence)
 		{
-			//Staff staff = new Staff();
-			//Models.Note currentNote = null;
-			//Models.Rest currentRest = null;
-			//var symbolFactory = new SymbolFactory();
 			Sequence = sequence;
 			SequenceCount = 0;
 			CurrentNote = null;

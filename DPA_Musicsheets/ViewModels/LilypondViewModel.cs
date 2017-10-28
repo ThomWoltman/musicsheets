@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Views;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -20,6 +21,7 @@ namespace DPA_Musicsheets.ViewModels
         private string _text;
         private string _previousText;
         private string _nextText;
+		public ILilyPondTextBox TextBox { get; set; }
 
         public string LilypondText
         {
@@ -97,7 +99,9 @@ namespace DPA_Musicsheets.ViewModels
 
         public ICommand SaveAsCommand => new RelayCommand(() =>
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
+			TextBox.Insert("Test123");
+
+			SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
             if (saveFileDialog.ShowDialog() == true)
             {
                 if (!_fileHandler.SaveFile(saveFileDialog.FileName)){

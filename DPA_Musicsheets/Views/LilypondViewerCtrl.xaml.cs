@@ -12,17 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DPA_Musicsheets.ViewModels;
 
 namespace DPA_Musicsheets.Views
 {
-    /// <summary>
-    /// Interaction logic for LilypondViewer.xaml
-    /// </summary>
-    public partial class LilypondViewerCtrl : UserControl
-    {
-        public LilypondViewerCtrl()
-        {
-            InitializeComponent();
-        }
-    }
+	public interface ILilyPondTextBox
+	{
+		void Insert(string text);
+	}
+
+	/// <summary>
+	/// Interaction logic for LilypondViewer.xaml
+	/// </summary>
+	public partial class LilypondViewerCtrl : UserControl, ILilyPondTextBox
+	{
+		public LilypondViewerCtrl()
+		{
+			InitializeComponent();
+			((LilypondViewModel)DataContext).TextBox = this;
+		}
+
+		public void Insert(string text)
+		{
+			LilyTextBox.Text = LilyTextBox.Text.Insert(LilyTextBox.CaretIndex, text);
+		}
+	}
 }
