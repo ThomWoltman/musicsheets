@@ -10,9 +10,9 @@ namespace DPA_Musicsheets.Converters.State
 		{
 			int division = context.Sequence.Division;
 			//int previousMidiKey = 60; // Central C;
-			int previousNoteAbsoluteTicks = 0;
-			double percentageOfBarReached = 0;
-			bool startedNoteIsClosed = true;
+			//int previousNoteAbsoluteTicks = 0;
+			//double percentageOfBarReached = 0;
+			//bool startedNoteIsClosed = true;
 
 			foreach (var midiEvent in context.Track.Iterator())
 			{
@@ -49,28 +49,28 @@ namespace DPA_Musicsheets.Converters.State
 								context.CurrentNote = context.SymbolFactory.create(channelMessage.Data1);
 
 								//previousMidiKey = channelMessage.Data1;
-								startedNoteIsClosed = false;
+								context.StartedNoteIsClosed = false;
 							}
-							else if (!startedNoteIsClosed)
+							else if (!context.StartedNoteIsClosed)
 							{
 								// Finish the previous note with the length.
 								bool hasDot = false;
 								double percentageOfBar;
 
-								context.CurrentNote.Length = GetNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, context.Staff.BeatNote, context.Staff.BeatPerBar, out hasDot, out percentageOfBar);
+								context.CurrentNote.Length = GetNoteLength(context.PreviousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, context.Staff.BeatNote, context.Staff.BeatPerBar, out hasDot, out percentageOfBar);
 								context.CurrentNote.HasDot = hasDot;
 
-								percentageOfBarReached += percentageOfBar;
-								previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
+								context.PercentageOfBarReached += percentageOfBar;
+								context.PreviousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
 
-								startedNoteIsClosed = true;
+								context.StartedNoteIsClosed = true;
 
 								context.Staff.AddSymbol(context.CurrentNote);
 								context.CurrentNote = null;
 
-								if (percentageOfBarReached >= 1)
+								if (context.PercentageOfBarReached >= 1)
 								{
-									percentageOfBarReached -= 1;
+									context.PercentageOfBarReached -= 1;
 									context.Staff.AddBar(new Bar());
 								}
 							}

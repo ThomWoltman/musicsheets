@@ -9,6 +9,9 @@ namespace DPA_Musicsheets.Converters.State
 		IMidiStaffConverterState State { get; set; }
 		Sequence Sequence { get; }
 		int SequenceCount { get; set; }
+		double PercentageOfBarReached { get; set; }
+		int PreviousNoteAbsoluteTicks { get; set; }
+		bool StartedNoteIsClosed { get; set; }
 		Staff Staff { get; set; }
 		Note CurrentNote { get; set; }
 		SymbolFactory SymbolFactory { get; }

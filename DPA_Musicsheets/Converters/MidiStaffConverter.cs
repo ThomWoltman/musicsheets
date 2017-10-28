@@ -16,6 +16,9 @@ namespace DPA_Musicsheets.Converters
 		public Track Track { get; set; }
 		public Note CurrentNote { get; set; }
 		public SymbolFactory SymbolFactory { get; set; }
+		public double PercentageOfBarReached { get; set; }
+		public int PreviousNoteAbsoluteTicks { get; set; }
+		public bool StartedNoteIsClosed { get; set; }
 
 		Track notesTrack;
 		int absoluteTicks;
