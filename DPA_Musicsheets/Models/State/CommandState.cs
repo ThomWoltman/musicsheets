@@ -13,6 +13,9 @@ namespace DPA_Musicsheets.Models.State
         {
             switch (content)
             {
+                case "": break;
+                case "2": break;
+                case "volta": break;
                 case "treble": break;
                 case "\\relative": context.NextState(new OctaveEntryState()); break;
                 case "\\clef": break;

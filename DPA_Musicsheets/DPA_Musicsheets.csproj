@@ -124,6 +124,8 @@
     <Compile Include="Models\Builders\SymbolFactory.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />
+    <Compile Include="Models\Memento\CareTaker.cs" />
+    <Compile Include="Models\Memento\Memento.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteAdjust.cs" />
     <Compile Include="Models\NoteType.cs" />

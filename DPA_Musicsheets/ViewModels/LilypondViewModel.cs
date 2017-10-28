@@ -1,6 +1,7 @@
 ﻿using DPA_Musicsheets.Converters;
 using DPA_Musicsheets.Managers;
 using DPA_Musicsheets.Messages;
+using DPA_Musicsheets.Models.Memento;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
@@ -18,8 +19,7 @@ namespace DPA_Musicsheets.ViewModels
         private FileHandler _fileHandler;
 
         private string _text;
-        private string _previousText;
-        private string _nextText;
+        private CareTaker _caretaker;
 
         public string LilypondText
         {
@@ -29,15 +29,16 @@ namespace DPA_Musicsheets.ViewModels
             }
             set
             {
-                if (!_waitingForRender && !_textChangedByLoad)
+                if (!_waitingForRender && !_textChangedByLoad &&!_textChangedByCommand)
                 {
-                    _previousText = _text;
+                    _caretaker.Save(_text);
                 }
                 _text = value;
                 RaisePropertyChanged(() => LilypondText);  
             }
         }
-        
+
+        private bool _textChangedByCommand = false;
         private bool _textChangedByLoad = false;
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
@@ -45,12 +46,13 @@ namespace DPA_Musicsheets.ViewModels
 
         public LilypondViewModel(FileHandler fileHandler)
         {
+            _caretaker = new CareTaker();
             _fileHandler = fileHandler;
 
             _fileHandler.StaffChanged += (src, args) =>
             {
                 _textChangedByLoad = true;
-                LilypondText = _previousText = new LilypondStaffConverter().Convert(args.Staff);
+                LilypondText = new LilypondStaffConverter().Convert(args.Staff);
                 _textChangedByLoad = false;
             };
 
@@ -78,6 +80,7 @@ namespace DPA_Musicsheets.ViewModels
                         if(staff != null)
                         {
                             _fileHandler.ChangeStaff(staff);
+                            UndoCommand.RaiseCanExecuteChanged();
                         }
                         else
                         {
@@ -90,18 +93,26 @@ namespace DPA_Musicsheets.ViewModels
 
         public RelayCommand UndoCommand => new RelayCommand(() =>
         {
-            _nextText = LilypondText;
-            LilypondText = _previousText;
-            _previousText = null;
-        }, () => _previousText != LilypondText);
+            
+            var lyText = LilypondText;
+
+            _textChangedByCommand = true;
+            LilypondText = _caretaker.Undo(lyText);
+            _textChangedByCommand = false;
+
+            RedoCommand.RaiseCanExecuteChanged();
+        }, () => _caretaker.CanUndo());
 
         public RelayCommand RedoCommand => new RelayCommand(() =>
-        {
-            _previousText = LilypondText;
-            LilypondText = _nextText;
-            _nextText = null;
-            RedoCommand.RaiseCanExecuteChanged();
-        }, () => _nextText != LilypondText);
+        {    
+            var lyText = LilypondText;
+
+            _textChangedByCommand = true;
+            LilypondText = _caretaker.Redo(lyText);
+            _textChangedByCommand = false;
+
+            UndoCommand.RaiseCanExecuteChanged();
+        }, () => _caretaker.CanRedo());
 
         public ICommand SaveAsCommand => new RelayCommand(() =>
         {
