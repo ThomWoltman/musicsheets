@@ -11,6 +11,6 @@ namespace DPA_Musicsheets.Managers
     {
         Staff OpenFile(string fileName);
 
-        Staff SaveFile(string fileName, Staff staff);
+        void SaveFile(string fileName, Staff staff);
     }
 }

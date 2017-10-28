@@ -25,9 +25,13 @@ namespace DPA_Musicsheets.Managers
             return converter.Convert(LilypondText);
         }
 
-        public Staff SaveFile(string fileName, Staff staff)
+        public void SaveFile(string fileName, Staff staff)
         {
-            throw new NotImplementedException();
+            using (StreamWriter outputFile = new StreamWriter(fileName))
+            {
+                outputFile.Write(new LilypondStaffConverter().Convert(staff));
+                outputFile.Close();
+            }
         }
     }
 }

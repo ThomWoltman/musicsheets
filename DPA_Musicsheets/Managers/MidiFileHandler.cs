@@ -25,9 +25,10 @@ namespace DPA_Musicsheets.Managers
             return new MidiStaffConverter().Convert(sequence);
         }
 
-        public Staff SaveFile(string fileName, Staff staff)
+        public void SaveFile(string fileName, Staff staff)
         {
-            throw new NotImplementedException();
+            Sequence sequence = new MidiStaffConverter().Convert(staff);
+            sequence.Save(fileName);
         }
     }
 }

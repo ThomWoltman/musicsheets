@@ -113,6 +113,8 @@
     <Compile Include="Managers\MidiFileHandler.cs" />
     <Compile Include="Managers\MidiFileHandlerProvider.cs" />
     <Compile Include="Managers\MidiSequenceEventArgs.cs" />
+    <Compile Include="Managers\PdfFileHandler.cs" />
+    <Compile Include="Managers\PdfFileHandlerProvider.cs" />
     <Compile Include="Managers\StaffEventArgs.cs" />
     <Compile Include="Managers\WPFStaffsEventArgs.cs" />
     <Compile Include="Managers\LilypondEventArgs.cs" />
