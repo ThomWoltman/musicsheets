@@ -113,6 +113,7 @@ namespace DPA_Musicsheets.Converters.State
 				hasDot = true;
 				percentageOfBeatNote = percentageOfBeatNote / 3 * 2;
 			}
+            percentageOfBeatNote = percentageOfBeatNote / 4;
 
 			return percentageOfBeatNote;
 		}
