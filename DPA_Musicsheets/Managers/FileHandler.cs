@@ -31,7 +31,13 @@ namespace DPA_Musicsheets.Managers
         public void OpenFile(string fileName)
         {
             var filehandler = CreateFileHandler(fileName);
-            MyStaff = filehandler.OpenFile(fileName);
+            MyStaff = filehandler?.OpenFile(fileName);
+            StaffChanged?.Invoke(this, new StaffEventArgs() { Staff = MyStaff, Message = "staff changed" });
+        }
+
+        public void ChangeStaff(Staff staff)
+        {
+            MyStaff = staff;
             StaffChanged?.Invoke(this, new StaffEventArgs() { Staff = MyStaff, Message = "staff changed" });
         }
 

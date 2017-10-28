@@ -75,6 +75,8 @@ namespace DPA_Musicsheets.ViewModels
 
                         //set new Staffs;
                         //_fileHandler.LoadLilypond(LilypondText);
+                        LilypondText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
+                        _fileHandler.ChangeStaff(new LilypondStaffConverter().Convert(LilypondText));                      
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }
