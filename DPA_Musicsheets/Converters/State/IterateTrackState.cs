@@ -13,6 +13,7 @@ namespace DPA_Musicsheets.Converters.State
 			//int previousNoteAbsoluteTicks = 0;
 			//double percentageOfBarReached = 0;
 			//bool startedNoteIsClosed = true;
+			bool startedNoteIsClosed = true;
 
 			foreach (var midiEvent in context.Track.Iterator())
 			{
