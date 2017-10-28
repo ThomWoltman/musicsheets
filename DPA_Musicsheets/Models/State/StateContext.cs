@@ -11,14 +11,18 @@ namespace DPA_Musicsheets.Models.State
         protected IState _currentState;
         public int Octave;
         public double percentageOfBar = 0;
+        public bool _isValid = true;
 
         public void Handle(Staff staff, string content)
         {
-            if(_currentState == null)
+            if (_isValid)
             {
-                _currentState = new CommandState();
-            }
-            _currentState.Handle(this, content, staff);
+                if (_currentState == null)
+                {
+                    _currentState = new CommandState();
+                }
+                _currentState.Handle(this, content, staff);
+            }    
         }
 
         public void NextState(IState state)

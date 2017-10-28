@@ -74,7 +74,15 @@ namespace DPA_Musicsheets.ViewModels
 
                         //set new Staffs
                         var lyText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
-                        _fileHandler.ChangeStaff(new LilypondStaffConverter().Convert(lyText));                      
+                        var staff = new LilypondStaffConverter().Convert(lyText);
+                        if(staff != null)
+                        {
+                            _fileHandler.ChangeStaff(staff);
+                        }
+                        else
+                        {
+                            MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = "Invalid lilypond" });
+                        }
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }

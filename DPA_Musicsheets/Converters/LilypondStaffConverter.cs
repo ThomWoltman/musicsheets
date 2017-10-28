@@ -105,7 +105,11 @@ namespace DPA_Musicsheets.Converters
                 this.Handle(staff, s);
             }
 
-            return staff;
+            if (this._isValid)
+            {
+                return staff;
+            }
+            return null;
         }
     }
 }

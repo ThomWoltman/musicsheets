@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models.State
@@ -12,6 +13,7 @@ namespace DPA_Musicsheets.Models.State
         {
             switch (content)
             {
+                case "treble": break;
                 case "\\relative": context.NextState(new OctaveEntryState()); break;
                 case "\\clef": break;
                 case "\\repeat": break;
@@ -21,9 +23,17 @@ namespace DPA_Musicsheets.Models.State
                 case "|": break;
                 case "{": break;
                 case "}": break;
-                default: context.NextState(new NoteState());
-                         context.Handle(staff, content);
-                         break;
+                case var someValue when new Regex(@"[a-g][,'eis]*[0-9]+[.]*").IsMatch(content): //note
+                    context.NextState(new NoteState());
+                    context.Handle(staff, content);
+                    break;
+                case var someValue when new Regex(@"r.*?[0-9][.]*").IsMatch(content): //rest
+                    context.NextState(new NoteState());
+                    context.Handle(staff, content);
+                    break;
+                default:
+                    context._isValid = false;
+                    break;
             }
         }
     }
