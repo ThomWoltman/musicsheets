@@ -103,6 +103,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandListener.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ICommandListener.cs" />
     <Compile Include="Converters\LilypondStaffConverter.cs" />
     <Compile Include="Converters\MidiStaffConverter.cs" />
     <Compile Include="Converters\State\IterateTrackState.cs" />
@@ -114,6 +117,8 @@
     <Compile Include="Managers\MidiFileHandler.cs" />
     <Compile Include="Managers\MidiFileHandlerProvider.cs" />
     <Compile Include="Managers\MidiSequenceEventArgs.cs" />
+    <Compile Include="Managers\PdfFileHandler.cs" />
+    <Compile Include="Managers\PdfFileHandlerProvider.cs" />
     <Compile Include="Managers\StaffEventArgs.cs" />
     <Compile Include="Managers\WPFStaffsEventArgs.cs" />
     <Compile Include="Managers\LilypondEventArgs.cs" />
@@ -128,6 +133,8 @@
     <Compile Include="Models\Builders\SymbolFactory.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />
+    <Compile Include="Models\Memento\CareTaker.cs" />
+    <Compile Include="Models\Memento\Memento.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteAdjust.cs" />
     <Compile Include="Models\NoteType.cs" />

@@ -1,15 +1,11 @@
 ﻿using DPA_Musicsheets.Models;
 using DPA_Musicsheets.Models.State;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Converters
 {
-    public class LilypondStaffConverter : StateContext
+	public class LilypondStaffConverter : StateContext
     {
         public StringBuilder _result = new StringBuilder();
         public int _octave = 0;
@@ -105,7 +101,11 @@ namespace DPA_Musicsheets.Converters
                 this.Handle(staff, s);
             }
 
-            return staff;
+            if (this._isValid)
+            {
+                return staff;
+            }
+            return null;
         }
     }
 }

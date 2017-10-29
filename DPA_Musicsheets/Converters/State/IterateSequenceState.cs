@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using DPA_Musicsheets.Models;
-using Sanford.Multimedia.Midi;
+﻿using System.Linq;
 
 namespace DPA_Musicsheets.Converters.State
 {

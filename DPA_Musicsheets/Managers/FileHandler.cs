@@ -1,21 +1,10 @@
-﻿using DPA_Musicsheets.Converters;
-using DPA_Musicsheets.Models;
-using DPA_Musicsheets.Models.Builders;
-using PSAMControlLibrary;
-using PSAMWPFControlLibrary;
-using Sanford.Multimedia.Midi;
+﻿using DPA_Musicsheets.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Managers
 {
-    public class FileHandler
+	public class FileHandler
     {
         public Staff MyStaff { get; set; }
         public event EventHandler<StaffEventArgs> StaffChanged;
@@ -30,7 +19,13 @@ namespace DPA_Musicsheets.Managers
         public void OpenFile(string fileName)
         {
             var filehandler = CreateFileHandler(fileName);
-            MyStaff = filehandler.OpenFile(fileName);
+            MyStaff = filehandler?.OpenFile(fileName);
+            StaffChanged?.Invoke(this, new StaffEventArgs() { Staff = MyStaff, Message = "staff changed" });
+        }
+
+        public void ChangeStaff(Staff staff)
+        {
+            MyStaff = staff;
             StaffChanged?.Invoke(this, new StaffEventArgs() { Staff = MyStaff, Message = "staff changed" });
         }
 

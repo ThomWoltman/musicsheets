@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using DPA_Musicsheets.Models;
 using System.IO;
 using DPA_Musicsheets.Converters;
 
 namespace DPA_Musicsheets.Managers
 {
-    public class LilypondFileHandler : IFileHandler
+	public class LilypondFileHandler : IFileHandler
     {
         public Staff OpenFile(string fileName)
         {
@@ -25,9 +21,13 @@ namespace DPA_Musicsheets.Managers
             return converter.Convert(LilypondText);
         }
 
-        public Staff SaveFile(string fileName, Staff staff)
+        public void SaveFile(string fileName, Staff staff)
         {
-            throw new NotImplementedException();
+            using (StreamWriter outputFile = new StreamWriter(fileName))
+            {
+                outputFile.Write(new LilypondStaffConverter().Convert(staff));
+                outputFile.Close();
+            }
         }
     }
 }

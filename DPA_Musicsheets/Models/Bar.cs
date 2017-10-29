@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DPA_Musicsheets.Models
 {
-    public class Bar
+	public class Bar
     {
         public List<Symbol> Symbols { get; set; }
         public Bar()

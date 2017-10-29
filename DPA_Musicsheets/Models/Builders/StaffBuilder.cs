@@ -1,13 +1,10 @@
 ﻿using Sanford.Multimedia.Midi;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models.Builders
 {
-    public class StaffBuilder
+	public class StaffBuilder
     {
         public Staff Staff { get; set; }
         public SymbolFactory SymbolFactory{ get; set; }

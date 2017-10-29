@@ -2,13 +2,13 @@
 
 namespace DPA_Musicsheets.Managers
 {
-	public class LilypondFileHandlerProvider : IFileHandlerProvider
+	public class PdfFileHandlerProvider : IFileHandlerProvider
     {
         public IFileHandler CreateFileHandler(string fileName)
         {
-            if (Path.GetExtension(fileName).EndsWith(".ly"))
+            if (Path.GetExtension(fileName).EndsWith(".pdf"))
             {
-                return new LilypondFileHandler();
+                return new PdfFileHandler();
             }
 
             return null;

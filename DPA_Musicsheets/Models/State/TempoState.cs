@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace DPA_Musicsheets.Models.State
+﻿namespace DPA_Musicsheets.Models.State
 {
-    internal class TempoState : IState
+	internal class TempoState : IState
     {
         public void Handle(StateContext context, string content, Staff staff)
         {

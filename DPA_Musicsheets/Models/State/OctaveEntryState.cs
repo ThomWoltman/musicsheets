@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace DPA_Musicsheets.Models.State
 {
-    internal class OctaveEntryState : IState
+	internal class OctaveEntryState : IState
     {
         public void Handle(StateContext context, string content, Staff staff)
         {
