@@ -169,27 +169,27 @@ namespace DPA_Musicsheets.ViewModels
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.C }, () =>
 			{
-				TextBox.Insert("\\clef treble");
+				TextBox.InsertAtCaretIndex("\\clef treble");
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.S }, () =>
 			{
-				TextBox.Insert("\\tempo 4=120");
+				TextBox.InsertAtCaretIndex("\\tempo 4=120");
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T }, () =>
 			{
-				TextBox.Insert("\\time 4/4");
+				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad4 }, () =>
 			{
-				TextBox.Insert("\\time 4/4");
+				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad3 }, () =>
 			{
-				TextBox.Insert("\\time 3/4");
+				TextBox.InsertAtCaretIndex("\\time 3/4");
 			});
 			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad6 }, () =>
 			{
-				TextBox.Insert("\\time 6/8");
+				TextBox.InsertAtCaretIndex("\\time 6/8");
 			});
 		}
 	}

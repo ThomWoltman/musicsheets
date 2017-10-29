@@ -7,7 +7,7 @@ namespace DPA_Musicsheets.Views
 {
 	public interface ILilyPondTextBox
 	{
-		void Insert(string text);
+		void InsertAtCaretIndex(string text);
 	}
 
 	/// <summary>
@@ -25,7 +25,7 @@ namespace DPA_Musicsheets.Views
 			context.TextBox = this;
 		}
 
-		public void Insert(string text)
+		public void InsertAtCaretIndex(string text)
 		{
 			LilypondTextBox.Text = LilypondTextBox.Text.Insert(LilypondTextBox.CaretIndex, text);
 		}
