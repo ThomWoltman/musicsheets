@@ -47,7 +47,7 @@ namespace DPA_Musicsheets.Converters
             symbols.Add(psamNote);
         }
 
-        public MusicalSymbolDuration getMusicalSymbolDuration(double length)
+        private MusicalSymbolDuration getMusicalSymbolDuration(double length)
         {
             int musicalsymbollength = (int)(1.0 / length);
             return (MusicalSymbolDuration)musicalsymbollength;
