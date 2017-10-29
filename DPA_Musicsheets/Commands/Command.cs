@@ -19,18 +19,10 @@ namespace DPA_Musicsheets.Commands
 
 		public bool CanExecute()
 		{
-			bool canExecute = true;
-
 			foreach (Key key in _keys)
-			{
-				if (!Keyboard.IsKeyDown(key))
-				{
-					canExecute = false;
-					break;
-				}
-			}
+				if (!Keyboard.IsKeyDown(key)) return false;
 
-			return canExecute;
+			return true;
 		}
 	}
 }
