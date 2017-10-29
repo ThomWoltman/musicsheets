@@ -10,6 +10,8 @@ namespace DPA_Musicsheets.Models.State
     {
         protected IState _currentState;
         public int Octave;
+        public List<Char> notesorder = new List<Char> { 'c', 'd', 'e', 'f', 'g', 'a', 'b' };
+        public char previousnote = 'c';
         public double percentageOfBar = 0;
         public bool _isValid = true;
 

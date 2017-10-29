@@ -7,7 +7,7 @@ namespace DPA_Musicsheets.Models.State
     {
         public void Handle(StateContext context, string content, Staff staff)
         {
-            int octave = 2;
+            int octave = 3;
             octave += content.Count(c => c == '\'');
             octave -= content.Count(c => c == ',');
 

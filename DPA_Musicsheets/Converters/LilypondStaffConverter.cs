@@ -20,12 +20,18 @@ namespace DPA_Musicsheets.Converters
             _result.Append("\\relative c");
             var note = (Note)staff.Bars.First().Symbols.First();
             _octave = note.Octave;
-            int relative = note.Octave - 2;
+            int relative = note.Octave - 3;
             while(relative > 0)
             {
                 _result.Append("'");
                 relative--;
             }
+            while (relative < 0)
+            {
+                _result.Append(",");
+                relative++;
+            }
+
             _result.Append(" {");
             _result.Append("\r\n");
 
@@ -51,24 +57,47 @@ namespace DPA_Musicsheets.Converters
 
         public void Visit(Note note)
         {
-            _result.Append($"{note.NoteType.ToString().ToLower()}{GetIsAs((int)note.NoteAdjust)}{OctaveAdjust(note.Octave)}{1.0/note.Length}{GetDot(note.HasDot)} ");
+            _result.Append($"{note.NoteType.ToString().ToLower()}{GetIsAs((int)note.NoteAdjust)}{OctaveAdjust(note.Octave, note.NoteType.ToString().ToLower()[0])}{1.0/note.Length}{GetDot(note.HasDot)} ");
         }
 
-        public string OctaveAdjust(int octave)
+        public string OctaveAdjust(int octave, char note)
         {
-            int adjust = octave - _octave;
-            _octave = octave;
-            if(adjust > 0)
+            int distanceWithPreviousNote = notesorder.IndexOf(note) - notesorder.IndexOf(previousnote);
+
+            if (distanceWithPreviousNote > 3) // Shorter path possible the other way around
             {
-                return "'";
+                distanceWithPreviousNote -= 7; // The number of notes in an octave
+            }
+            else if (distanceWithPreviousNote < -3)
+            {
+                distanceWithPreviousNote += 7; // The number of notes in an octave
             }
 
-            if(adjust < 0)
+            if (distanceWithPreviousNote + notesorder.IndexOf(previousnote) >= 7)
             {
-                return ",";
+                _octave++;
+            }
+            else if (distanceWithPreviousNote + notesorder.IndexOf(previousnote) < 0)
+            {
+                _octave--;
             }
 
-            return "";
+            previousnote = note;
+
+            string result = "";
+            while(_octave < octave)
+            {
+                _octave++;
+                result += "'";
+            }
+
+            while (_octave > octave)
+            {
+                _octave--;
+                result += ",";
+            }
+
+            return result;
         }
 
         private string GetDot(bool hasdot)

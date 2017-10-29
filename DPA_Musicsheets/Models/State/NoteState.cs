@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Linq;
+
 
 namespace DPA_Musicsheets.Models.State
 {
@@ -27,18 +29,33 @@ namespace DPA_Musicsheets.Models.State
 
                 note.HasDot = content.Contains(".");
 
-                if (content.Contains("'"))
+                int distanceWithPreviousNote = context.notesorder.IndexOf(content[0]) - context.notesorder.IndexOf(context.previousnote);
+                if (distanceWithPreviousNote > 3) // Shorter path possible the other way around
                 {
-                    context.Octave = context.Octave + 1;
+                    distanceWithPreviousNote -= 7; // The number of notes in an octave
                 }
-                if (content.Contains(","))
+                else if (distanceWithPreviousNote < -3)
                 {
-                    context.Octave = context.Octave - 1;
+                    distanceWithPreviousNote += 7; // The number of notes in an octave
                 }
+
+                if (distanceWithPreviousNote + context.notesorder.IndexOf(context.previousnote) >= 7)
+                {
+                    context.Octave++;
+                }
+                else if (distanceWithPreviousNote + context.notesorder.IndexOf(context.previousnote) < 0)
+                {
+                    context.Octave--;
+                }
+
+                context.previousnote = content[0];
+
+                context.Octave += content.Count(c => c == '\'');
+                context.Octave -= content.Count(c => c == ',');
 
                 note.Octave = context.Octave;
 
-                note.NoteType = (NoteType)content.Substring(0, 1).ToUpper().ToCharArray()[0];
+                note.NoteType = (NoteType)content.ToUpper()[0];
 
                 staff.AddSymbol(note);
 
