@@ -80,23 +80,13 @@ namespace DPA_Musicsheets.Converters
 			Sequence = new Sequence();
 
 			Track metaTrack = new Track();
-			Sequence.Add(metaTrack);
+            notesTrack = new Track();
+            Sequence.Add(metaTrack);
+            Sequence.Add(notesTrack);
 
-			// Calculate tempo
-			int speed = (60000000 / staff.Bpm);
-			byte[] tempo = new byte[3];
-			tempo[0] = (byte)((speed >> 16) & 0xff);
-			tempo[1] = (byte)((speed >> 8) & 0xff);
-			tempo[2] = (byte)(speed & 0xff);
-			metaTrack.Insert(0 /* Insert at 0 ticks*/, new MetaMessage(MetaType.Tempo, tempo));
+            AddTempo(metaTrack, staff);
+            AddTimeSignature(metaTrack, staff);
 
-			notesTrack = new Track();
-			Sequence.Add(notesTrack);
-
-			byte[] timeSignature = new byte[4];
-			timeSignature[0] = (byte)staff.BeatPerBar;
-			timeSignature[1] = (byte)(Math.Log(staff.BeatNote) / Math.Log(2));
-			metaTrack.Insert(absoluteTicks, new MetaMessage(MetaType.TimeSignature, timeSignature));
 
 			foreach (Bar bar in staff.Bars)
 			{
@@ -109,5 +99,24 @@ namespace DPA_Musicsheets.Converters
 			metaTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
 			return Sequence;
 		}
+
+        private void AddTempo(Track metaTrack, Staff staff)
+        {
+            // Calculate tempo
+            int speed = (60000000 / staff.Bpm);
+            byte[] tempo = new byte[3];
+            tempo[0] = (byte)((speed >> 16) & 0xff);
+            tempo[1] = (byte)((speed >> 8) & 0xff);
+            tempo[2] = (byte)(speed & 0xff);
+            metaTrack.Insert(0 /* Insert at 0 ticks*/, new MetaMessage(MetaType.Tempo, tempo));
+        }
+
+        private void AddTimeSignature(Track metaTrack, Staff staff)
+        {
+            byte[] timeSignature = new byte[4];
+            timeSignature[0] = (byte)staff.BeatPerBar;
+            timeSignature[1] = (byte)(Math.Log(staff.BeatNote) / Math.Log(2));
+            metaTrack.Insert(absoluteTicks, new MetaMessage(MetaType.TimeSignature, timeSignature));
+        }
 	}
 }
