@@ -57,10 +57,16 @@ namespace DPA_Musicsheets.Converters
 
         public void Visit(Note note)
         {
-            _result.Append($"{note.NoteType.ToString().ToLower()}{GetIsAs((int)note.NoteAdjust)}{OctaveAdjust(note.Octave, note.NoteType.ToString().ToLower()[0])}{1.0/note.Length}{GetDot(note.HasDot)} ");
+            string noteType = note.NoteType.ToString().ToLower();
+            string noteAdjust = GetIsAs((int)note.NoteAdjust);
+            string octaveAdjust = OctaveAdjust(note.Octave, note.NoteType.ToString().ToLower()[0]);
+            string noteLength = 1.0 / note.Length + "";
+            string dot = GetDot(note.HasDot);
+
+            _result.Append($"{noteType}{noteAdjust}{octaveAdjust}{noteLength}{dot} ");
         }
 
-        public string OctaveAdjust(int octave, char note)
+        private string OctaveAdjust(int octave, char note)
         {
             int distanceWithPreviousNote = notesorder.IndexOf(note) - notesorder.IndexOf(previousnote);
 
