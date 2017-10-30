@@ -103,8 +103,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandListener.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ICommandListener.cs" />
     <Compile Include="Converters\LilypondStaffConverter.cs" />
     <Compile Include="Converters\MidiStaffConverter.cs" />
+    <Compile Include="Converters\State\IterateTrackState.cs" />
     <Compile Include="Converters\WPFStaffConverter.cs" />
     <Compile Include="Managers\IFileHandler.cs" />
     <Compile Include="Managers\IFileHandlerProvider.cs" />
@@ -123,6 +127,9 @@
     <Compile Include="Models\Bar.cs" />
     <Compile Include="Models\Builders\PSAMStaffBuilder.cs" />
     <Compile Include="Models\Builders\StaffBuilder.cs" />
+    <Compile Include="Converters\State\IMidiStaffConverterContext.cs" />
+    <Compile Include="Converters\State\IMidiStaffConverterState.cs" />
+    <Compile Include="Converters\State\IterateSequenceState.cs" />
     <Compile Include="Models\Builders\SymbolFactory.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />

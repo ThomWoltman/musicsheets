@@ -1,28 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.ViewModels;
 
 namespace DPA_Musicsheets.Views
 {
-    /// <summary>
-    /// Interaction logic for LilypondViewer.xaml
-    /// </summary>
-    public partial class LilypondViewerCtrl : UserControl
-    {
-        public LilypondViewerCtrl()
-        {
-            InitializeComponent();
-        }
-    }
+	public interface ILilyPondTextBox
+	{
+		void InsertAtCaretIndex(string text);
+	}
+
+	/// <summary>
+	/// Interaction logic for LilypondViewer.xaml
+	/// </summary>
+	public partial class LilypondViewerCtrl : UserControl, ILilyPondTextBox
+	{
+		private ICommandListener _commandListener;
+
+		public LilypondViewerCtrl()
+		{
+			InitializeComponent();
+			LilypondViewModel context = DataContext as LilypondViewModel;
+			_commandListener = context.CommandListener;
+			context.TextBox = this;
+		}
+
+		public void InsertAtCaretIndex(string text)
+		{
+			LilypondTextBox.Text = LilypondTextBox.Text.Insert(LilypondTextBox.CaretIndex, text);
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			base.OnKeyDown(e);
+			_commandListener.Handle();
+		}
+	}
 }

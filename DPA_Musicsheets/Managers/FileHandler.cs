@@ -1,22 +1,10 @@
-﻿
-using DPA_Musicsheets.Converters;
-using DPA_Musicsheets.Models;
-using DPA_Musicsheets.Models.Builders;
-using PSAMControlLibrary;
-using PSAMWPFControlLibrary;
-using Sanford.Multimedia.Midi;
+﻿using DPA_Musicsheets.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Managers
 {
-    public class FileHandler
+	public class FileHandler
     {
         public Staff MyStaff { get; set; }
         public event EventHandler<StaffEventArgs> StaffChanged;

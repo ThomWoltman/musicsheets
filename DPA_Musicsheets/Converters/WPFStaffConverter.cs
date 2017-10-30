@@ -2,13 +2,10 @@
 using PSAMControlLibrary;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Converters
 {
-    public class WPFStaffConverter
+	public class WPFStaffConverter
     {
         private List<MusicalSymbol> symbols;
 
@@ -47,7 +44,7 @@ namespace DPA_Musicsheets.Converters
             symbols.Add(psamNote);
         }
 
-        public MusicalSymbolDuration getMusicalSymbolDuration(double length)
+        private MusicalSymbolDuration getMusicalSymbolDuration(double length)
         {
             int musicalsymbollength = (int)(1.0 / length);
             return (MusicalSymbolDuration)musicalsymbollength;

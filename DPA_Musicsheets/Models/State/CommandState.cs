@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace DPA_Musicsheets.Models.State
 {
-    public class CommandState : IState
+	public class CommandState : IState
     {
         public void Handle(StateContext context, string content, Staff staff)
         {

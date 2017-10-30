@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DPA_Musicsheets.Models.Builders
+﻿namespace DPA_Musicsheets.Models.Builders
 {
-    public class SymbolFactory
+	public class SymbolFactory
     {
         public Rest createRest()
         {

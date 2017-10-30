@@ -11,118 +11,186 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Views;
+using DPA_Musicsheets.Commands;
 
 namespace DPA_Musicsheets.ViewModels
 {
-    public class LilypondViewModel : ViewModelBase
-    {
-        private FileHandler _fileHandler;
+	public class LilypondViewModel : ViewModelBase
+	{
+		private FileHandler _fileHandler;
+		public ICommandListener CommandListener { get; }
 
-        private string _text;
-        private CareTaker _caretaker;
+		private string _text;
+		private string _previousText;
+		private string _nextText;
+		public ILilyPondTextBox TextBox { get; set; }
+		private CareTaker _caretaker;
 
-        public string LilypondText
-        {
-            get
-            {
-                return _text;
-            }
-            set
-            {
-                if (!_waitingForRender && !_textChangedByLoad &&!_textChangedByCommand)
-                {
-                    _caretaker.Save(_text);
-                }
-                _text = value;
-                RaisePropertyChanged(() => LilypondText);  
-            }
-        }
+		public string LilypondText
+		{
+			get
+			{
+				return _text;
+			}
+			set
+			{
+				if (!_waitingForRender && !_textChangedByLoad && !_textChangedByCommand)
+				{
+					_caretaker.Save(_text);
+				}
+				_text = value;
+				RaisePropertyChanged(() => LilypondText);
+			}
+		}
 
-        private bool _textChangedByCommand = false;
-        private bool _textChangedByLoad = false;
-        private DateTime _lastChange;
-        private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
-        private bool _waitingForRender = false;
+		private bool _textChangedByCommand = false;
+		private bool _textChangedByLoad = false;
+		private DateTime _lastChange;
+		private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
+		private bool _waitingForRender = false;
 
-        public LilypondViewModel(FileHandler fileHandler)
-        {
-            _caretaker = new CareTaker();
-            _fileHandler = fileHandler;
+		public LilypondViewModel(FileHandler fileHandler)
+		{
+			_fileHandler = fileHandler;
+			CommandListener = new CommandListener();
+			_caretaker = new CareTaker();
 
-            _fileHandler.StaffChanged += (src, args) =>
-            {
-                _textChangedByLoad = true;
-                LilypondText = new LilypondStaffConverter().Convert(args.Staff);
-                _textChangedByLoad = false;
-            };
+			_fileHandler.StaffChanged += (src, args) =>
+			{
+				_textChangedByLoad = true;
+				LilypondText = new LilypondStaffConverter().Convert(args.Staff);
+				_textChangedByLoad = false;
+			};
 
-            _text = "Your lilypond text will appear here.";
-        }
-        
-        public ICommand TextChangedCommand => new RelayCommand<TextChangedEventArgs>((args) =>
-        {
-            if (!_textChangedByLoad)
-            {
-                _waitingForRender = true;
-                _lastChange = DateTime.Now;
-                MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = "Rendering..." });
+			_text = "Your lilypond text will appear here.";
+			InitCommands();
+		}
 
-                Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
-                {
-                    if ((DateTime.Now - _lastChange).TotalMilliseconds >= MILLISECONDS_BEFORE_CHANGE_HANDLED)
-                    {
-                        _waitingForRender = false;
-                        UndoCommand.RaiseCanExecuteChanged();
+		public ICommand TextChangedCommand => new RelayCommand<TextChangedEventArgs>((args) =>
+		{
+			if (!_textChangedByLoad)
+			{
+				_waitingForRender = true;
+				_lastChange = DateTime.Now;
+				MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = "Rendering..." });
 
-                        //set new Staffs
-                        var lyText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
-                        var staff = new LilypondStaffConverter().Convert(lyText);
-                        if(staff != null)
-                        {
-                            _fileHandler.ChangeStaff(staff);
-                            UndoCommand.RaiseCanExecuteChanged();
-                        }
-                        else
-                        {
-                            MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = "Invalid lilypond" });
-                        }
-                    }
-                }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
-            }
-        });
+				Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
+				{
+					if ((DateTime.Now - _lastChange).TotalMilliseconds >= MILLISECONDS_BEFORE_CHANGE_HANDLED)
+					{
+						_waitingForRender = false;
+						UndoCommand.RaiseCanExecuteChanged();
 
-        public RelayCommand UndoCommand => new RelayCommand(() =>
-        {
-            
-            var lyText = LilypondText;
+						//set new Staffs
+						var lyText = LilypondText.Trim().ToLower().Replace("\r\n", " ").Replace("\n", " ").Replace("  ", " ");
+						var staff = new LilypondStaffConverter().Convert(lyText);
+						if (staff != null)
+						{
+							_fileHandler.ChangeStaff(staff);
+							UndoCommand.RaiseCanExecuteChanged();
+						}
+						else
+						{
+							MessengerInstance.Send<CurrentStateMessage>(new CurrentStateMessage() { State = "Invalid lilypond" });
+						}
+					}
+				}, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
+			}
+		});
 
-            _textChangedByCommand = true;
-            LilypondText = _caretaker.Undo(lyText);
-            _textChangedByCommand = false;
+		public RelayCommand UndoCommand => new RelayCommand(() =>
+		{
+			var lyText = LilypondText;
 
-            RedoCommand.RaiseCanExecuteChanged();
-        }, () => _caretaker.CanUndo());
+			_textChangedByCommand = true;
+			LilypondText = _caretaker.Undo(lyText);
+			_textChangedByCommand = false;
 
-        public RelayCommand RedoCommand => new RelayCommand(() =>
-        {    
-            var lyText = LilypondText;
+			RedoCommand.RaiseCanExecuteChanged();
+		}, () => _caretaker.CanUndo());
 
-            _textChangedByCommand = true;
-            LilypondText = _caretaker.Redo(lyText);
-            _textChangedByCommand = false;
+		public RelayCommand RedoCommand => new RelayCommand(() =>
+		{
+			var lyText = LilypondText;
 
-            UndoCommand.RaiseCanExecuteChanged();
-        }, () => _caretaker.CanRedo());
+			_textChangedByCommand = true;
+			LilypondText = _caretaker.Redo(lyText);
+			_textChangedByCommand = false;
 
-        public ICommand SaveAsCommand => new RelayCommand(() =>
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                if (!_fileHandler.SaveFile(saveFileDialog.FileName)){
-                    MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
-                }
-            }
-        });
-    }
+			UndoCommand.RaiseCanExecuteChanged();
+		}, () => _caretaker.CanRedo());
+
+		public ICommand SaveAsCommand => new RelayCommand(() =>
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
+			if (saveFileDialog.ShowDialog() == true)
+			{
+				if (!_fileHandler.SaveFile(saveFileDialog.FileName))
+				{
+					MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
+				}
+			}
+		});
+
+		public ICommand SaveAsLilypondCommand => new RelayCommand(() =>
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Lilypond|*.ly" };
+			if (saveFileDialog.ShowDialog() == true)
+			{
+				if (!_fileHandler.SaveFile(saveFileDialog.FileName))
+				{
+					MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
+				}
+			}
+		});
+
+		public ICommand SaveAsPDFCommand => new RelayCommand(() =>
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "PDF|*.pdf" };
+			if (saveFileDialog.ShowDialog() == true)
+			{
+				if (!_fileHandler.SaveFile(saveFileDialog.FileName))
+				{
+					MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
+				}
+			}
+		});
+
+		private void InitCommands()
+		{
+			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.S }, () =>
+			{
+				SaveAsLilypondCommand.Execute(null);
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.S, Key.P }, () =>
+			{
+				SaveAsPDFCommand.Execute(null);
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.C }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\clef treble");
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.S }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\tempo 4=120");
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\time 4/4");
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad4 }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\time 4/4");
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad3 }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\time 3/4");
+			});
+			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad6 }, () =>
+			{
+				TextBox.InsertAtCaretIndex("\\time 6/8");
+			});
+		}
+	}
 }

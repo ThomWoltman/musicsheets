@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models
 {
-    public class Staff
+	public class Staff
     {
         public int BeatNote { get; set; }
         public int BeatPerBar { get; set; }

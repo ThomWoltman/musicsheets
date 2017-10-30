@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DPA_Musicsheets.Models.Memento
 {
-    public class CareTaker
+	public class CareTaker
     {
         private Stack<Memento> _undos;
         private Stack<Memento> _redos;

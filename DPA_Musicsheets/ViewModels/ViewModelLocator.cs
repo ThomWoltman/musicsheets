@@ -1,12 +1,11 @@
 ﻿using DPA_Musicsheets.Managers;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using System.Collections.Generic;
 
 namespace DPA_Musicsheets.ViewModels
 {
-    public class ViewModelLocator
+	public class ViewModelLocator
     {
         public ViewModelLocator()
         {

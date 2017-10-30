@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DPA_Musicsheets.Models;
 using System.IO;
 using DPA_Musicsheets.Converters;
@@ -10,7 +6,7 @@ using System.Diagnostics;
 
 namespace DPA_Musicsheets.Managers
 {
-    public class PdfFileHandler : IFileHandler
+	public class PdfFileHandler : IFileHandler
     {
         public Staff OpenFile(string fileName)
         {

@@ -1,13 +1,11 @@
-﻿using System;
-using DPA_Musicsheets.Models;
+﻿using DPA_Musicsheets.Models;
 using DPA_Musicsheets.Models.Builders;
 using Sanford.Multimedia.Midi;
-using System.Linq;
 using DPA_Musicsheets.Converters;
 
 namespace DPA_Musicsheets.Managers
 {
-    public class MidiFileHandler : IFileHandler
+	public class MidiFileHandler : IFileHandler
     {       
             public Staff Staff { get; set; }
             public SymbolFactory SymbolFactory { get; set; }
