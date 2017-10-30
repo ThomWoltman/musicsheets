@@ -13,6 +13,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DPA_Musicsheets.Views;
 using DPA_Musicsheets.Commands;
+using System.ComponentModel;
+using DPA_Musicsheets.Models.Lilypondstate;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -26,6 +28,7 @@ namespace DPA_Musicsheets.ViewModels
 		private string _nextText;
 		public ILilyPondTextBox TextBox { get; set; }
 		private CareTaker _caretaker;
+        private ILilypondstate state;
 
 		public string LilypondText
 		{
@@ -37,9 +40,10 @@ namespace DPA_Musicsheets.ViewModels
 			{
 				if (!_waitingForRender && !_textChangedByLoad && !_textChangedByCommand)
 				{
-					_caretaker.Save(_text);
+                    _caretaker.Save(_text);
 				}
-				_text = value;
+                state = new UnSavedState();
+                _text = value;
 				RaisePropertyChanged(() => LilypondText);
 			}
 		}
@@ -52,7 +56,9 @@ namespace DPA_Musicsheets.ViewModels
 
 		public LilypondViewModel(FileHandler fileHandler)
 		{
-			_fileHandler = fileHandler;
+            state = new SavedState();
+            Application.Current.MainWindow.Closing += new CancelEventHandler(MainWindow_Closing);
+            _fileHandler = fileHandler;
 			CommandListener = new CommandListener();
 			_caretaker = new CareTaker();
 
@@ -130,6 +136,10 @@ namespace DPA_Musicsheets.ViewModels
 				{
 					MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
 				}
+                else
+                {
+                    state = new SavedState();
+                }
 			}
 		});
 
@@ -157,7 +167,12 @@ namespace DPA_Musicsheets.ViewModels
 			}
 		});
 
-		private void InitCommands()
+        void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            state.Handle(this);
+        }
+
+        private void InitCommands()
 		{
 			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.S }, () =>
 			{

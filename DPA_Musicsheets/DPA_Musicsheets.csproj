@@ -121,6 +121,9 @@
     <Compile Include="Managers\Filehandler\StaffEventArgs.cs" />
     <Compile Include="Messages\CurrentStateMessage.cs" />
     <Compile Include="Managers\Filehandler\FileHandler.cs" />
+    <Compile Include="Models\Lilypondstate\ILilypondstate.cs" />
+    <Compile Include="Models\Lilypondstate\SavedState.cs" />
+    <Compile Include="Models\Lilypondstate\UnSavedState.cs" />
     <Compile Include="Models\Staff\Bar.cs" />
     <Compile Include="Converters\Midi\State\IMidiStaffConverterContext.cs" />
     <Compile Include="Converters\Midi\State\IMidiStaffConverterState.cs" />

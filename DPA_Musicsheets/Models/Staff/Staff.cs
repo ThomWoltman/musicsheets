@@ -9,13 +9,10 @@ namespace DPA_Musicsheets.Models
         public int BeatPerBar { get; set; }
         public int Bpm { get; set; }
 
-        //public List<Symbol> Symbols { get; set; }
-
         public List<Bar> Bars { get; set; }
 
         public Staff()
         {
-            //Symbols = new List<Symbol>();
             Bars = new List<Bar>();
         }
 
