@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DPA_Musicsheets.Converters
 {
-	public class WPFStaffConverter
+	public class WPFStaffConverter : IConverter
     {
         private List<MusicalSymbol> symbols;
 

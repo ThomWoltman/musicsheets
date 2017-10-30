@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DPA_Musicsheets.Converters
 {
-	public class LilypondStaffConverter : StateContext
+	public class LilypondStaffConverter : StateContext, IConverter
     {
         public StringBuilder _result = new StringBuilder();
         public int _octave = 0;

@@ -194,15 +194,15 @@ namespace DPA_Musicsheets.ViewModels
 			{
 				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
-			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad4 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.D4 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
-			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad3 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.D3 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 3/4");
 			});
-			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad6 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.D6 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 6/8");
 			});

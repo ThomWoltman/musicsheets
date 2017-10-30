@@ -15,8 +15,9 @@ namespace DPA_Musicsheets.Shortcuts
 		{
 			get
 			{
-				foreach (Key key in _keys)
+				foreach (Key key in _keys.Reverse())
 					if (!Keyboard.IsKeyDown(key)) return false;
+
 				return true;
 			}
 		}

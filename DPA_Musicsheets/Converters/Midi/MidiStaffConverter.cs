@@ -7,7 +7,7 @@ using DPA_Musicsheets.Converters.State;
 
 namespace DPA_Musicsheets.Converters
 {
-	public class MidiStaffConverter : IMidiStaffConverterContext
+	public class MidiStaffConverter : IMidiStaffConverterContext, IConverter
 	{
 		public IMidiStaffConverterState State { get; set; }
 		public Sequence Sequence { get; set; }
