@@ -8,10 +8,6 @@ namespace DPA_Musicsheets.Models
 
         public virtual double Length { get; set; }
 
-        public abstract void Accept(WPFStaffConverter converter);
-
-        public abstract void Accept(MidiStaffConverter converter);
-
-        public abstract void Accept(LilypondStaffConverter converter);
+        public abstract void Accept(IConverter converter);
     }
 }

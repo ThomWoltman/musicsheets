@@ -12,17 +12,7 @@ namespace DPA_Musicsheets.Models
         {
             
         }
-        public override void Accept(WPFStaffConverter converter)
-        {
-            converter.Visit(this);
-        }
-
-        public override void Accept(MidiStaffConverter converter)
-        {
-            converter.Visit(this);
-        }
-
-        public override void Accept(LilypondStaffConverter converter)
+        public override void Accept(IConverter converter)
         {
             converter.Visit(this);
         }

@@ -106,6 +106,7 @@
     <Compile Include="Commands\CommandListener.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\ICommandListener.cs" />
+    <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\Lilypond\LilypondStaffConverter.cs" />
     <Compile Include="Converters\Midi\MidiStaffConverter.cs" />
     <Compile Include="Converters\Midi\State\IterateTrackState.cs" />
