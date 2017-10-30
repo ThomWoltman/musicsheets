@@ -1,4 +1,7 @@
-﻿namespace DPA_Musicsheets.Models.State
+﻿using System;
+using System.Collections.Generic;
+
+namespace DPA_Musicsheets.Models.State
 {
 	public abstract class StateContext
     {
