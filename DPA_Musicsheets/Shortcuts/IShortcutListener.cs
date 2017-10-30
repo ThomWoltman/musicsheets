@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace DPA_Musicsheets.Commands
+namespace DPA_Musicsheets.Shortcuts
 {
-    public interface ICommandListener
-    {
-		void AddCommand(Key[] keys, Action action);
-		void Handle();
-    }
+	public interface IShortcutListener
+	{
+		void AddShortcut(Key[] keys, Action command);
+		bool Listen();
+	}
 }

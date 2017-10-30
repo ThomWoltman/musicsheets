@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Shortcuts;
 using DPA_Musicsheets.ViewModels;
 
 namespace DPA_Musicsheets
@@ -10,18 +10,18 @@ namespace DPA_Musicsheets
 	/// </summary>
 	public partial class MainWindow : Window
     {
-		private ICommandListener _commandListener;
+		private IShortcutListener _shortcutListener;
 
         public MainWindow()
         {
             InitializeComponent();
-			_commandListener = (DataContext as MainViewModel).CommandListener;
-        }
+			_shortcutListener = (DataContext as MainViewModel).ShortcutListener;
+		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
-			_commandListener.Handle();
+			e.Handled = _shortcutListener.Listen();
 		}
     }
 }

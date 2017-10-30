@@ -5,13 +5,13 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using System;
 using System.Windows.Input;
-using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Shortcuts;
 
 namespace DPA_Musicsheets.ViewModels
 {
 	public class MainViewModel : ViewModelBase
 	{
-		public ICommandListener CommandListener { get; }
+		public IShortcutListener ShortcutListener { get; }
 
 		private string _fileName;
 		public string FileName
@@ -39,7 +39,7 @@ namespace DPA_Musicsheets.ViewModels
 		public MainViewModel(FileHandler fileHandler)
 		{
 			_fileHandler = fileHandler;
-			CommandListener = new CommandListener();
+			ShortcutListener = new ShortcutListener();
 			FileName = @"Files/Alle-eendjes-zwemmen-in-het-water.mid";
 
 			MessengerInstance.Register<CurrentStateMessage>(this, (message) => CurrentState = message.State);
@@ -82,7 +82,7 @@ namespace DPA_Musicsheets.ViewModels
 
 		private void InitCommands()
 		{
-			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.O }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftCtrl, Key.O }, () =>
 			{
 				OpenFileCommand.Execute(null);
 			});

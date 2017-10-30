@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DPA_Musicsheets.Views;
-using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Shortcuts;
 using System.ComponentModel;
 using DPA_Musicsheets.Models.Lilypondstate;
 
@@ -21,14 +21,14 @@ namespace DPA_Musicsheets.ViewModels
 	public class LilypondViewModel : ViewModelBase
 	{
 		private FileHandler _fileHandler;
-		public ICommandListener CommandListener { get; }
+		public IShortcutListener ShortcutListener { get; }
 
 		private string _text;
 		private string _previousText;
 		private string _nextText;
 		public ILilyPondTextBox TextBox { get; set; }
 		private CareTaker _caretaker;
-        private ILilypondstate state;
+		private ILilypondstate state;
 
 		public string LilypondText
 		{
@@ -40,10 +40,10 @@ namespace DPA_Musicsheets.ViewModels
 			{
 				if (!_waitingForRender && !_textChangedByLoad && !_textChangedByCommand)
 				{
-                    _caretaker.Save(_text);
+					_caretaker.Save(_text);
 				}
-                state = new UnSavedState();
-                _text = value;
+				state = new UnSavedState();
+				_text = value;
 				RaisePropertyChanged(() => LilypondText);
 			}
 		}
@@ -56,10 +56,10 @@ namespace DPA_Musicsheets.ViewModels
 
 		public LilypondViewModel(FileHandler fileHandler)
 		{
-            state = new SavedState();
-            Application.Current.MainWindow.Closing += new CancelEventHandler(MainWindow_Closing);
-            _fileHandler = fileHandler;
-			CommandListener = new CommandListener();
+			state = new SavedState();
+			Application.Current.MainWindow.Closing += new CancelEventHandler(MainWindow_Closing);
+			_fileHandler = fileHandler;
+			ShortcutListener = new ShortcutListener();
 			_caretaker = new CareTaker();
 
 			_fileHandler.StaffChanged += (src, args) =>
@@ -136,10 +136,10 @@ namespace DPA_Musicsheets.ViewModels
 				{
 					MessageBox.Show($"Extension {Path.GetExtension(saveFileDialog.FileName)} is not supported.");
 				}
-                else
-                {
-                    state = new SavedState();
-                }
+				else
+				{
+					state = new SavedState();
+				}
 			}
 		});
 
@@ -167,42 +167,42 @@ namespace DPA_Musicsheets.ViewModels
 			}
 		});
 
-        void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            state.Handle(this);
-        }
-
-        private void InitCommands()
+		void MainWindow_Closing(object sender, CancelEventArgs e)
 		{
-			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.S }, () =>
+			state.Handle(this);
+		}
+
+		private void InitCommands()
+		{
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftCtrl, Key.S }, () =>
 			{
 				SaveAsLilypondCommand.Execute(null);
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftCtrl, Key.S, Key.P }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftCtrl, Key.S, Key.P }, () =>
 			{
 				SaveAsPDFCommand.Execute(null);
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.C }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.C }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\clef treble");
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.S }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.S }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\tempo 4=120");
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad4 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad4 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 4/4");
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad3 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad3 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 3/4");
 			});
-			CommandListener.AddCommand(new Key[] { Key.LeftAlt, Key.T, Key.NumPad6 }, () =>
+			ShortcutListener.AddShortcut(new Key[] { Key.LeftAlt, Key.T, Key.NumPad6 }, () =>
 			{
 				TextBox.InsertAtCaretIndex("\\time 6/8");
 			});
